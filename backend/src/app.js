@@ -5,6 +5,7 @@ import "./db/connection.js";
 import authRoutes from "./routes/authRoutes.js";
 import artistRoutes from "./routes/artistRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import bookingRoutes from "./routes/bookingRoutes.js";
 
 const app = express();
 const PORT = 4000;   
@@ -16,12 +17,11 @@ app.get("/", (req, res) => {
   res.send("API VenueBooker funcionando! 🎸");
 });
 
-app.use("/api/auth", authRoutes);
-
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 
+app.use("/api/auth", authRoutes);
 app.use("/api/artist", artistRoutes);
-
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/bookings", bookingRoutes);

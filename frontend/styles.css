@@ -284,3 +284,27 @@ textarea:focus {
 .artist-card-public a:hover {
   text-decoration: underline;
 }
+
+.booking-card {
+  background: var(--panel);
+  padding: 18px;
+  margin: 15px 0;
+  border-radius: 12px;
+  border: 1px solid rgba(192, 132, 252, 0.18);
+}
+
+.booking-card button {
+  margin-right: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-accept {
+  background: #33d69f;
+}
+
+.btn-reject {
+  background: #ff6b6b;
+}
