@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>VenueBooker | Registro</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="top-bar">
+    <div class="logo">VenueBooker</div>
+    <nav class="nav-links">
+      <a href="index.html">Login</a>
+      <a href="register.html" aria-current="page">Registro</a>
+    </nav>
+  </header>
+
+  <main class="auth-layout">
+    <section class="auth-card">
+      <h1>Crea tu cuenta</h1>
+      <p class="subtitle">Registra tus datos para empezar a reservar.</p>
+
+      <form id="registerForm" class="form" novalidate>
+        <label for="registerName">Nombre completo</label>
+        <input type="text" id="registerName" name="name" placeholder="Jane Doe" required />
+
+        <label for="registerEmail">Email</label>
+        <input type="email" id="registerEmail" name="email" placeholder="tú@example.com" required />
+
+        <label for="registerPassword">Contraseña</label>
+        <input type="password" id="registerPassword" name="password" placeholder="Mínimo 6 caracteres" minlength="6"
+          required />
+
+        <label for="registerConfirm">Confirmar contraseña</label>
+        <input type="password" id="registerConfirm" name="confirm" placeholder="Repite tu contraseña" minlength="6"
+          required />
+
+        <label for="registerPhone">Teléfono</label>
+        <input type="text" id="registerPhone" name="phone" placeholder="+506 8888 0000" required />
+
+        <label for="registerType">Tipo de usuario</label>
+        <select id="registerType" name="userType" required>
+          <option value="" disabled selected>Seleccionar...</option>
+          <option value="artist">Músico/Artista</option>
+          <option value="venue">Dueño/Organizador</option>
+          <option value="consumer">Consumidor</option>
+        </select>
+
+        <button type="submit">Crear cuenta</button>
+      </form>
+
+      <p class="helper">¿Ya tienes cuenta? <a href="index.html">Inicia sesión</a></p>
+
+      <div id="output" class="message info">Completa los datos para registrarte.</div>
+    </section>
+  </main>
+
+  <script type="module" src="script/app.js"></script>
+  <script type="module" src="script/register.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Artista | VenueBooker</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <div class="logo">VenueBooker</div>
+        <nav class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <div class="artist-public">
+
+            <h1 id="artistName"></h1>
+            <p id="genres"></p>
+
+            <h2>Biografía</h2>
+            <p id="bio"></p>
+
+            <h2>Ubicación</h2>
+            <p id="location"></p>
+
+            <h2>Tarifa Base</h2>
+            <p id="rate"></p>
+
+            <h2>Redes Sociales</h2>
+            <p id="instagram"></p>
+
+        </div>
+        
+        <h2>Reseñas</h2>
+        <ul id="reviews"></ul>
+
+        <h3>Deja una reseña</h3>
+
+        <form id="reviewForm">
+            <label>Calificación (1 a 5)</label>
+            <select id="rating" required>
+                <option value="5">⭐⭐⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="1">⭐</option>
+            </select>
+
+            <label>Comentario</label>
+            <textarea id="comment" required></textarea>
+
+            <label>Tu nombre</label>
+            <input id="reviewer" required placeholder="Tu nombre para mostrar" />
+
+            <button type="submit">Enviar Reseña</button>
+        </form>
+
+    </main>
+
+    <script type="module" src="script/profile-artist.js"></script>
+</body>
+
+</html>
