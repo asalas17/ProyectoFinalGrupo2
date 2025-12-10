@@ -24,6 +24,26 @@ async function loadProfile() {
             : "No disponible";
 }
 
+let selectedRating = 0;
+
+document.querySelectorAll("#starRating i").forEach(star => {
+    star.addEventListener("mouseover", () => highlightStars(star.dataset.value));
+    star.addEventListener("mouseout", () => highlightStars(selectedRating));
+    star.addEventListener("click", () => {
+        selectedRating = star.dataset.value;
+        highlightStars(selectedRating);
+    });
+});
+
+function highlightStars(limit) {
+    document.querySelectorAll("#starRating i").forEach(s => {
+        s.classList.remove("active");
+        if (s.dataset.value <= limit) {
+            s.classList.add("active");
+        }
+    });
+}
+
 async function loadReviews() {
     const res = await fetch(`http://localhost:4000/api/reviews/${artistId}`);
     const reviews = await res.json();
@@ -32,39 +52,59 @@ async function loadReviews() {
     list.innerHTML = "";
 
     if (reviews.length === 0) {
-        list.textContent = "No hay reseñas todavía.";
+        list.innerHTML = `<p>No hay reseñas todavía.</p>`;
         return;
     }
 
     reviews.forEach(r => {
-        const li = document.createElement("li");
-        li.textContent = `⭐${r.rating} — ${r.comment} (${r.userName})`;
-        list.appendChild(li);
+        const div = document.createElement("div");
+        div.className = "review-item";
+        div.innerHTML = `
+            <p><strong>${"⭐".repeat(r.rating)}</strong></p>
+            <p>${r.comment}</p>
+            <small>— ${r.userName}</small>
+        `;
+        list.appendChild(div);
     });
 }
 
-document.getElementById("reviewForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+document.getElementById("submitReviewBtn").addEventListener("click", async () => {
 
-  const payload = {
-    artistId,
-    userName: document.getElementById("reviewer").value,
-    rating: document.getElementById("rating").value,
-    comment: document.getElementById("comment").value
-  };
+    const userName = document.getElementById("reviewDisplayName").value.trim();
+    const comment = document.getElementById("reviewComment").value.trim();
 
-  await fetch("http://localhost:4000/api/reviews", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
+    if (selectedRating === 0) {
+        alert("Selecciona una calificación ⭐");
+        return;
+    }
 
-  alert("Gracias por tu reseña! ✔️");
-  document.getElementById("reviewForm").reset();
+    if (!userName || !comment) {
+        alert("Completa todos los campos.");
+        return;
+    }
 
-  loadReviews();
+    const payload = {
+        artistId,
+        userName,
+        rating: selectedRating,
+        comment
+    };
+
+    await fetch("http://localhost:4000/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+
+    alert("Gracias por tu reseña  ");
+
+    selectedRating = 0;
+    highlightStars(0);
+    document.getElementById("reviewDisplayName").value = "";
+    document.getElementById("reviewComment").value = "";
+
+    loadReviews();
 });
-
 
 loadProfile();
 loadReviews();

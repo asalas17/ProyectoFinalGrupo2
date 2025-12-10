@@ -8,6 +8,4 @@ router.get("/:userId", getArtist);
 router.post("/", createArtist);
 router.put("/:userId", updateArtist);
 
-
-
 export default router;

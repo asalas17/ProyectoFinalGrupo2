@@ -21,18 +21,18 @@ if (loginForm) {
       if (!res.ok) {
         showMessage(data.message, "error");
       } else {
-        // GUARDAR EL USER EN LOCALSTORAGE 🔥
         localStorage.setItem(
           "user",
           JSON.stringify({
             id: data.user.id,
             fullName: data.user.fullName,
-            userType: data.user.userType   // <-- ESTO
+            userType: data.user.userType,
+            artistId: data.user.artistId || null
           })
         );
 
 
-        showMessage(`Bienvenido ${data.user.fullName}! 🎉`, "success");
+        showMessage(`Bienvenido ${data.user.fullName}!`, "success");
 
         setTimeout(() => window.location.href = "dashboard.html", 900);
       }

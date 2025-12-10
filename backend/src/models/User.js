@@ -7,6 +7,7 @@ const UsersSchema = new mongoose.Schema(
     password: String,
     phone: String,
     userType: { type: String, enum: ["artist", "venue", "consumer"], default: "consumer" },
+    artistId: { type: mongoose.Schema.Types.ObjectId, ref: "Artists", default: null }, 
     isVerified: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
     lastLogin: Date

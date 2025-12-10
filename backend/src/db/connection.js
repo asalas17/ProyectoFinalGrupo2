@@ -6,5 +6,5 @@ mongoose.connect(
     dbName: "VenueBooker"
   }
 )
-.then(() => console.log("Mongo DB conectado ✔️"))
-.catch((err) => console.error("Error conectando MongoDB:", err));
+  .then(() => console.log("DB conectada"))
+  .catch((err) => console.error("Error conectando a DB:", err));

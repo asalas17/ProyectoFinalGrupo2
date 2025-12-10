@@ -8,14 +8,7 @@
 </head>
 
 <body>
-
-    <header class="top-bar">
-        <div class="logo">VenueBooker</div>
-        <nav class="nav-links">
-            <a href="dashboard.html">Dashboard</a>
-        </nav>
-    </header>
-
+    <div id="globalHeaderContainer"></div>
     <main class="dashboard">
         <div class="artist-public">
 
@@ -35,34 +28,77 @@
             <p id="instagram"></p>
 
         </div>
-        
-        <h2>Reseñas</h2>
-        <ul id="reviews"></ul>
 
-        <h3>Deja una reseña</h3>
+        <div class="booking-section">
+            <button id="bookArtistBtn" class="reserve-button">
+                Reservar a este artista
+            </button>
+        </div>
 
-        <form id="reviewForm">
-            <label>Calificación (1 a 5)</label>
-            <select id="rating" required>
-                <option value="5">⭐⭐⭐⭐⭐</option>
-                <option value="4">⭐⭐⭐⭐</option>
-                <option value="3">⭐⭐⭐</option>
-                <option value="2">⭐⭐</option>
-                <option value="1">⭐</option>
-            </select>
 
-            <label>Comentario</label>
-            <textarea id="comment" required></textarea>
+        <div class="reviews-wrapper">
 
-            <label>Tu nombre</label>
-            <input id="reviewer" required placeholder="Tu nombre para mostrar" />
+            <div class="review-form-box">
+                <h3>Deja una reseña</h3>
 
-            <button type="submit">Enviar Reseña</button>
-        </form>
+                <label>Calificación</label>
+                <div class="star-rating" id="starRating">
+                    <i class="bi bi-star" data-value="1"></i>
+                    <i class="bi bi-star" data-value="2"></i>
+                    <i class="bi bi-star" data-value="3"></i>
+                    <i class="bi bi-star" data-value="4"></i>
+                    <i class="bi bi-star" data-value="5"></i>
+                </div>
+
+                <label>Comentario</label>
+                <textarea id="reviewComment" placeholder="Escribe tu opinión..." rows="3"></textarea>
+
+                <label>Tu nombre para mostrar</label>
+                <input id="reviewDisplayName" type="text" placeholder="Ej: Andrés S." />
+
+                <button id="submitReviewBtn" class="review-btn">Enviar Reseña</button>
+            </div>
+
+            <div class="reviews-list-box">
+                <h3>Reseñas</h3>
+
+                <div id="reviews" class="reviews-scroll"></div>
+            </div>
+
+        </div>
+
+
+        <div id="bookingModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>Solicitar Reserva</h2>
+                <form id="bookingForm">
+
+                    <label>Fecha del evento:</label>
+                    <input type="date" id="eventDate" required>
+
+                    <label>Lugar:</label>
+                    <input type="text" id="eventLocation" placeholder="Ej: Bar La Estación" required>
+
+                    <label>Tipo de evento:</label>
+                    <input type="text" id="eventType" placeholder="Ej: Live Concert" required>
+
+                    <label>Duración (horas):</label>
+                    <input type="number" id="hoursDuration" min="1" max="12" required>
+
+                    <label>Pago ofrecido (₡):</label>
+                    <input type="number" id="payment" min="10000" required>
+
+                    <button type="submit">Enviar solicitud</button>
+                    <button type="button" id="closeModal">Cancelar</button>
+                </form>
+            </div>
+        </div>
 
     </main>
 
     <script type="module" src="script/profile-artist.js"></script>
+    <script src="utils/loadHeader.js"></script>
+
 </body>
 
 </html>

@@ -16,8 +16,9 @@ const ArtistSchema = new mongoose.Schema({
   reviewsCount: Number,
   stripeAccountId: String,
   createdAt: Date
-}, 
+},
 { collection: "Artists" }
 );
+
 
 export default mongoose.model("Artists", ArtistSchema);

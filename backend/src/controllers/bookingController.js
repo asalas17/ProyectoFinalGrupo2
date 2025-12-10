@@ -1,15 +1,17 @@
 import Bookings from "../models/Booking.js";
 
+//INSERT
 export const createBooking = async (req, res) => {
   try {
     const booking = await Bookings.create(req.body);
     return res.json(booking);
   } catch (error) {
-    console.error("Error crear booking:", error);
+    console.error("Error:", error);
     return res.status(500).json({ message: "Error", error });
   }
 };
 
+//GET
 export const getBookingsByArtist = async (req, res) => {
   try {
     const bookings = await Bookings.find({ artistId: req.params.artistId });
@@ -19,6 +21,7 @@ export const getBookingsByArtist = async (req, res) => {
   }
 };
 
+//GET
 export const getBookingsByVenue = async (req, res) => {
   try {
     const bookings = await Bookings.find({ venueId: req.params.venueId });
@@ -28,6 +31,7 @@ export const getBookingsByVenue = async (req, res) => {
   }
 };
 
+//UPDATE
 export const updateBookingStatus = async (req, res) => {
   try {
     const booking = await Bookings.findById(req.params.bookingId);
@@ -44,3 +48,23 @@ export const updateBookingStatus = async (req, res) => {
     return res.status(500).json({ message: "Error", error });
   }
 };
+
+//GET
+export const getBookingById = async (req, res) => {
+  try {
+    const booking = await Bookings.findById(req.params.id);
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking no encontrado" });
+    }
+
+    return res.json(booking);
+
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error",
+      error: err.message
+    });
+  }
+};
+

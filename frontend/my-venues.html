@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Mis Locales | VenueBooker</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div id="globalHeaderContainer"></div>
+
+
+    <main class="dashboard">
+
+        <section id="venueListSection">
+            <h1>Mis Locales</h1>
+            <button class="create-btn" id="createVenueBtn">+ Crear Nuevo Local</button>
+
+            <div id="venuesContainer"></div>
+        </section>
+
+        <section class="auth-card" id="venueFormSection" style="max-width: 900px; display:none;">
+            <div class="tabs-container">
+
+                <div class="tabs">
+                    <button class="tab active" data-tab="general">General</button>
+                    <button class="tab" data-tab="location">Ubicación</button>
+                    <button class="tab" data-tab="amenities">Amenidades</button>
+                    <button class="tab" data-tab="hours">Horario</button>
+                </div>
+
+                <form id="venueForm">
+
+                    <div class="tab-content active" id="general">
+                        <div class="form-grid-2">
+
+                            <label>Nombre del Local
+                                <input id="venueName" type="text" placeholder="Ej: El Sótano Cultural" />
+                            </label>
+
+                            <label>Tipo de Venue
+                                <input id="venueType" type="text" placeholder="Bar, Centro Cultural…" />
+                            </label>
+
+                            <label>Descripción
+                                <textarea id="description" rows="3"></textarea>
+                            </label>
+
+                            <label>Capacidad
+                                <input id="capacity" type="number" />
+                            </label>
+
+                            <label>Teléfono
+                                <input id="phone" type="text" />
+                            </label>
+
+                        </div>
+                    </div>
+
+
+                    <div class="tab-content" id="location">
+                        <div class="form-grid-2">
+
+                            <label>Provincia
+                                <input id="provincia" type="text" placeholder="San José, Alajuela…" />
+                            </label>
+
+                            <label>Distrito
+                                <input id="distrito" type="text" placeholder="Montes de Oca, Desamparados…" />
+                            </label>
+
+                        </div>
+                    </div>
+
+
+                    <div class="tab-content" id="amenities">
+                        <p class="subtitle">Selecciona los servicios que ofrece el venue:</p>
+
+                        <div class="amenity-grid">
+                            <label><input type="checkbox" class="amenity" value="Parqueo"> Parqueo</label>
+                            <label><input type="checkbox" class="amenity" value="Backline"> Backline</label>
+                            <label><input type="checkbox" class="amenity" value="Sonido Base"> Sonido Base</label>
+                            <label><input type="checkbox" class="amenity" value="WiFi"> WiFi</label>
+                            <label><input type="checkbox" class="amenity" value="Aire Acondicionado"> A/C</label>
+                            <label><input type="checkbox" class="amenity" value="Camerinos"> Camerinos</label>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-content" id="hours">
+                        <p class="subtitle">Selecciona los horarios por día.</p>
+                        <div id="schedulePanel"></div>
+                    </div>
+
+                    <button type="submit" class="save-btn">Guardar Local</button>
+                </form>
+
+            </div>
+        </section>
+        <h2 style="margin-top:40px">Mis Locales Registrados</h2>
+        <div id="venueList" class="venue-list"></div>
+
+    </main>
+
+    <script type="module" src="./script/my-venues.js"></script>
+    <script type="module" src="./utils/loadHeader.js"></script>
+
+</body>
+
+</html>

@@ -1,71 +1,107 @@
-const user = JSON.parse(localStorage.getItem("user"));
-if (!user) window.location.href = "index.html";
+const API_BASE = "http://localhost:4000/api";
+
+const storedUser = localStorage.getItem("user");
+if (!storedUser) {
+  window.location.href = "index.html";
+}
+
+const user = JSON.parse(storedUser);
+// solo permitir artista
+if (user.userType !== "artist") {
+  window.location.href = "dashboard.html";
+}
 
 const artistForm = document.getElementById("artistForm");
+const $ = (id) => document.getElementById(id);
 
 async function loadProfile() {
-    const res = await fetch(`http://localhost:4000/api/artist/${user.id}`);
-    const data = await res.json();
+  // si el usuario no tiene perfil artista, no hace req
+  if (!user.artistId) {
+    console.log("Este usuario aún no tiene perfil artístico.");
+    return;
+  }
 
-    if (data) {
-        document.getElementById("artistName").value = data.artistName || "";
-        document.getElementById("genre").value = data.genre || "";
-        document.getElementById("bio").value = data.bio || "";
-        document.getElementById("instagram").value = data.instagram || "";
-        document.getElementById("estiloMusical").value = data.estiloMusical || "";
-        document.getElementById("provincia").value = data.provincia || "";
-        document.getElementById("distrito").value = data.distrito || "";
-        document.getElementById("telefonoArtista").value = data.telefonoArtista || "";
-        document.getElementById("correoArtista").value = data.correoArtista || "";
-        document.getElementById("tarifaBase").value = data.tarifaBase || "";
-
+  try {
+    const res = await fetch(`${API_BASE}/artist/${user.artistId}`);
+    if (!res.ok) {
+      console.warn("No se pudo cargar el perfil artístico:", await res.text());
+      return;
     }
+
+    const data = await res.json();
+    console.log("Perfil artístico cargado:", data);
+    $("artistName").value = data.artistName || "";
+    $("genre").value = data.generoMusical || "";
+    $("bio").value = data.bio || "";
+    $("instagram").value = data.instagram || "";
+    $("estiloMusical").value = data.estiloMusical || "";
+    $("provincia").value = data.provincia || "";
+    $("distrito").value = data.distrito || "";
+    $("telefonoArtista").value = data.telefonoArtista || "";
+    $("correoArtista").value = data.correoArtista || "";
+    $("tarifaBase").value = data.tarifaBase ?? "";
+  } catch (err) {
+    console.error("Error cargando perfil artista:", err);
+  }
 }
 
 artistForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const payload = {
-        userId: user.id,
-        artistName: document.getElementById("artistName").value,
-        generoMusical: document.getElementById("genre").value,
-        estiloMusical: document.getElementById("estiloMusical").value,
-        bio: document.getElementById("bio").value,
-        provincia: document.getElementById("provincia").value,
-        distrito: document.getElementById("distrito").value,
-        telefonoArtista: document.getElementById("telefonoArtista").value,
-        correoArtista: document.getElementById("correoArtista").value,
-        tarifaBase: document.getElementById("tarifaBase").value,
-        instagram: document.getElementById("instagram").value,
-    };
+  const payload = {
+    userId: user.id,
+    artistName: $("artistName").value.trim(),
+    generoMusical: $("genre").value.trim(), 
+    bio: $("bio").value.trim(),
+    instagram: $("instagram").value.trim(),
+    estiloMusical: $("estiloMusical").value.trim(),
+    provincia: $("provincia").value,
+    distrito: $("distrito").value.trim(),
+    telefonoArtista: $("telefonoArtista").value.trim(),
+    correoArtista: $("correoArtista").value.trim(),
+    tarifaBase: Number($("tarifaBase").value) || 0,
+  };
 
+  try {
+    let res;
 
-    // Check if exists
-    const check = await fetch(`http://localhost:4000/api/artist/${user.id}`);
-    const exists = await check.json();
-
-    if (exists) {
-        await fetch(`http://localhost:4000/api/artist/${user.id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
+    if (user.artistId) {
+      res = await fetch(`${API_BASE}/artist/${user.artistId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
     } else {
-        await fetch("http://localhost:4000/api/artist", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
+      res = await fetch(`${API_BASE}/artist`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
     }
 
-    alert("Perfil guardado ✔️");
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error("Error guardando perfil:", errText);
+      alert("No se pudo guardar el perfil. Revisa la consola para más detalle.");
+      return;
+    }
+
+    const data = await res.json();
+    console.log("Respuesta guardado perfil:", data);
+
+    const artistDoc = data.artist || data;
+
+    if (!user.artistId && artistDoc && artistDoc._id) {
+      user.artistId = artistDoc._id;
+      localStorage.setItem("user", JSON.stringify(user));
+      console.log("artistId actualizado en localStorage:", user.artistId);
+    }
+
+    alert("Perfil guardado  ");
+  } catch (err) {
+    console.error("Error guardando perfil:", err);
+    alert("Ocurrió un error al guardar el perfil.");
+  }
 });
 
-// logout
-document.getElementById("logoutBtn").addEventListener("click", () => {
-    localStorage.removeItem("user");
-    window.location.href = "index.html";
-});
-
-// Load initial profile
 loadProfile();

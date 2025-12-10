@@ -30,7 +30,7 @@ if (registerForm) {
       if (!res.ok) {
         showMessage(data.message, "error");
       } else {
-        showMessage("Cuenta creada correctamente 🎸", "success");
+        showMessage("Cuenta creada correctamente", "success");
         registerForm.reset();
       }
 

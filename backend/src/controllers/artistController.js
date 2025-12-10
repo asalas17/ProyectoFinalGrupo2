@@ -1,10 +1,11 @@
 import Artists from "../models/Artist.js";
 
+//GET
 export const getArtist = async (req, res) => {
   try {
     let artist = await Artists.findOne({ userId: req.params.userId });
 
-    // Si no lo encuentra por userId, intenta por _id
+    //Si no encuentra por userId, intenta por _id
     if (!artist) {
       artist = await Artists.findById(req.params.userId);
     }
@@ -20,38 +21,56 @@ export const getArtist = async (req, res) => {
   }
 };
 
-
+//INSERT
 export const createArtist = async (req, res) => {
-    try {
-        const { userId } = req.body;
+  try {
+    const { userId } = req.body;
 
-        const exist = await Artists.findOne({ userId });
-        if (exist) {
-            return res.status(400).json({ message: "Este perfil ya existe" });
-        }
-
-        const artist = await Artists.create(req.body);
-        res.json({ message: "Perfil creado ✔️", artist });
-
-    } catch (err) {
-        res.status(500).json({ message: "Error", error: err.message });
+    // validacion si existe el artista
+    const exist = await Artists.findOne({ userId });
+    if (exist) {
+      return res.status(400).json({ message: "Este perfil ya existe" });
     }
+
+    // crear artista
+    const artist = await Artists.create(req.body);
+    console.log("REQ.BODY:", req.body);
+
+    // actualizar artistId en Users
+    console.log("ACTUALIZANDO USER:", userId, "CON ARTIST:", artist._id);
+    await Users.findByIdAndUpdate(userId, {
+      artistId: artist._id
+    });
+
+
+    // se retorna artistid
+    return res.json({
+      message: "Perfil creado  ",
+      artistId: artist._id
+    });
+
+
+  } catch (err) {
+    res.status(500).json({ message: "Error", error: err.message });
+  }
 };
 
+//UPDATE
 export const updateArtist = async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const updated = await Artists.findOneAndUpdate(
-            { userId },
-            { ...req.body, updatedAt: new Date() },
-            { new: true }
-        );
-        res.json({ message: "Perfil actualizado ✔️", updated });
-    } catch (err) {
-        res.status(500).json({ message: "Error", error: err.message });
-    }
+  try {
+    const { userId } = req.params;
+    const updated = await Artists.findOneAndUpdate(
+      { userId },
+      { ...req.body, updatedAt: new Date() },
+      { new: true }
+    );
+    res.json({ message: "Perfil actualizado", updated });
+  } catch (err) {
+    res.status(500).json({ message: "Error", error: err.message });
+  }
 };
 
+//GET
 export const getAllArtists = async (req, res) => {
   try {
     console.log("Buscando artistas con filters:", req.query);

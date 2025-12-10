@@ -1,5 +1,6 @@
 import Reviews from "../models/Review.js";
 
+//GET
 export const getReviews = async (req, res) => {
   try {
     const { artistId } = req.params;
@@ -10,10 +11,11 @@ export const getReviews = async (req, res) => {
   }
 };
 
+//INSERT
 export const createReview = async (req, res) => {
   try {
     const review = await Reviews.create(req.body);
-    res.json({ message: "Review agregada ✔️", review });
+    res.json({ message: "Review agregada", review });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
